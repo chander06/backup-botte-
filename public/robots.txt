@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+Sitemap: https://botte-gelata.yuvraj-chander.workers.dev/sitemap.xml

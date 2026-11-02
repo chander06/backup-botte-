@@ -1,0 +1,111 @@
+/* Banner cookie — adatta le variabili ai colori del sito. Copiare in /assets/css/cookie-consent.css */
+:root {
+  --cc-bg: rgb(255 255 255 / .86);
+  --cc-bg-solid: #ffffff;
+  --cc-fg: #1d1d1f;
+  --cc-muted: #6e6e73;
+  --cc-border: rgb(0 0 0 / .08);
+  --cc-btn-bg: #1d1d1f;
+  --cc-btn-fg: #ffffff;
+  --cc-radius: 22px;
+  --cc-font: inherit;
+}
+/* Sito con sfondo scuro: aggiungi class="cc-dark" a <html> (o copia questi valori in :root) */
+html.cc-dark {
+  --cc-bg: rgb(28 28 30 / .86);
+  --cc-bg-solid: #1c1c1e;
+  --cc-fg: #f5f5f7;
+  --cc-muted: #a1a1a6;
+  --cc-border: rgb(255 255 255 / .12);
+  --cc-btn-bg: #f5f5f7;
+  --cc-btn-fg: #1d1d1f;
+}
+
+.cc-banner {
+  position: fixed;
+  z-index: 9999;
+  left: 0; right: 0; bottom: 0;
+  padding: 12px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  pointer-events: none;
+  font-family: var(--cc-font);
+  animation: cc-in .5s cubic-bezier(.2,.8,.2,1) both;
+}
+.cc-box {
+  pointer-events: auto;
+  position: relative;
+  max-width: 560px;
+  max-height: min(78svh, 640px);
+  overflow-y: auto;
+  margin-left: auto;
+  padding: 22px 22px 18px;
+  color: var(--cc-fg);
+  background: var(--cc-bg);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius);
+  box-shadow: 0 20px 60px rgb(0 0 0 / .18);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .cc-box { background: var(--cc-bg-solid); }
+}
+.cc-title { margin: 0 32px 6px 0; font-size: 1.05rem; font-weight: 600; line-height: 1.3; }
+.cc-text { margin: 0 0 14px; font-size: .9rem; line-height: 1.5; color: var(--cc-muted); overflow-wrap: break-word; }
+.cc-text a { color: var(--cc-fg); text-decoration: underline; text-underline-offset: 2px; }
+
+.cc-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 50%;
+  background: transparent; color: var(--cc-muted);
+  font-size: 1.6rem; line-height: 1; cursor: pointer;
+}
+.cc-close:hover { color: var(--cc-fg); }
+
+.cc-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.cc-btn {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--cc-btn-bg);
+  border-radius: 999px;
+  background: var(--cc-btn-bg);
+  color: var(--cc-btn-fg);
+  font: inherit; font-size: .9rem; font-weight: 600;
+  cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease;
+}
+.cc-btn:active { transform: scale(.97); }
+.cc-btn--ghost { background: transparent; color: var(--cc-fg); border-color: var(--cc-border); }
+.cc-btn:focus-visible, .cc-close:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+.cc-panel { margin: 0 0 14px; border-top: 1px solid var(--cc-border); }
+.cc-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px 0; border-bottom: 1px solid var(--cc-border); cursor: pointer;
+}
+.cc-row span { min-width: 0; }
+.cc-row strong { display: block; font-size: .92rem; }
+.cc-row small { display: block; font-size: .8rem; color: var(--cc-muted); line-height: 1.4; }
+.cc-row input { flex: none; width: 22px; height: 22px; accent-color: var(--cc-btn-bg); }
+
+/* Segnaposto per mappe/contenuti esterni prima del consenso */
+.cc-placeholder {
+  display: grid; place-items: center; gap: 12px;
+  min-height: 260px; padding: 24px; text-align: center;
+  border-radius: var(--cc-radius);
+  background: rgb(127 127 127 / .08);
+}
+.cc-placeholder[hidden] { display: none; }
+
+/* Telefono: pulsanti uno sotto l'altro, Accetta e Rifiuta restano identici */
+@media (max-width: 480px) {
+  .cc-box { padding: 20px 16px 14px; }
+  .cc-actions { grid-template-columns: 1fr 1fr; }
+  .cc-actions .cc-btn--ghost { grid-column: 1 / -1; order: 3; }
+}
+
+/* Se il sito ha un pulsante WhatsApp fisso in basso, alzalo mentre il banner è aperto, ad es.:
+   .cc-open .wa-fab { opacity: 0; pointer-events: none; }                                       */
+
+@keyframes cc-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cc-banner { animation: none; } }
